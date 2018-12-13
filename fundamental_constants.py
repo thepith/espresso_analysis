@@ -1,7 +1,6 @@
 """List of fundamental constants"""
 import numpy as np
 
-# source: 2017 CODATA
 ELECTRON_CHARGE = 1.602176634 * np.power(10.0, -19.0) # C  # exact
 AVOGADRO_NUMBER = 6.02214076 * np.power(10.0, 23.0) # mol^{-1} # exact
 ELECTRIC_CONSTANT = 8.854187817 * np.power(10.0, -12.0) # F m^{-1}
