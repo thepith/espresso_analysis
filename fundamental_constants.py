@@ -52,6 +52,12 @@ def dielectric_constant_water(temperature=298.15):
     fitfunction = np.poly1d(fitdata)
     return fitfunction(temperature)
 
+def celsius_from_kelvin(temperature):
+    return temperature - 273.15
+
+def kelvin_from_celsius(temperature):
+    return temperature + 273.15
+
 def bjerrum_length_water(temperature=298.15):
     """
     Return the bjerrum length of water at a given temperature. The Bjerrum
@@ -69,3 +75,80 @@ def bjerrum_length_water(temperature=298.15):
              temperature
             )
     return bjerrum
+
+def density_water(temperature=298.15):
+    """
+    Calculate the density of water saturated with air at 0.1 MPa in the range
+    of5 °C to 40 °C.
+
+    Returns density in g/cm^3
+
+    Data from:
+       Jones et al., J Res Natl Inst Stand Technol. 1992; 97(3): 335-340.
+       DOI: 10.6028/jres.097.013.
+    """
+
+    temperature_celsius = celsius_from_kelvin(temperature)
+    if (temperature_celsius < 5.0) or (temperature_celsius > 40.0):
+        raise ValueError('Density of water is only valid in the range of '
+                         '5 °C to 40 °C')
+    rho = 999.84847 \
+            + 6.337563e-2 * temperature_celsius \
+            - 8.523829e-3 * temperature_celsius**2 \
+            + 6.943248e-5 * temperature_celsius**3 \
+            - 3.821216e-7 * temperature_celsius**4
+
+    return rho/1000.0
+
+
+def ionization_constant_water(temperature=298.15):
+    """
+    Calculate the ionizatoin constant (Kw) of water at the fiven temperature
+    and 0.1 MPa pressure.
+
+    Data from:
+        Bandura etal., J. Phys. Chem. Ref. Data, Vol. 35, No. 1, 2006
+        DOI: 10.1063/1.1928231
+    """
+    import numpy as np
+
+    # using Model II from Bandura etal
+    # model parameters
+    n = 6
+    alpha_0 = -0.864671
+    alpha_1 = 8659.19
+    alpha_2 = -22786.2
+    beta_0 = 0.642044
+    beta_1 = -56.8534
+    beta_2 = -0.375754
+
+    # Water parameters
+    Mw = 18.01528
+
+    # temperature
+    T = temperature
+
+    # density
+    D = density_water(T)
+
+    pKWG = 0.61415 \
+            + 48251.33 / T \
+            - 67707.93 / T**2.0 \
+            + 10102100.0 / T**3.0
+
+    Z = D * np.exp(alpha_0 \
+                   + alpha_1/T \
+                   + alpha_2/T**2 *np.power(D,2.0/3.0)
+                  )
+
+    pKw = -2*n*(
+        np.log10(1 + Z) - (Z/(Z + 1)) * D * (
+            beta_0 + beta_1/T + beta_2*D
+        )
+    ) + pKWG + 2 * np.log10(Mw/1000.0)
+
+    return np.power(10, -pKw)
+
+
+
+
