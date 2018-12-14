@@ -101,10 +101,11 @@ def density_water(temperature=298.15):
     return rho/1000.0
 
 
-def ionization_constant_water(temperature=298.15):
+def ionization_constant_water(temperature=298.15, density=None):
     """
     Calculate the ionizatoin constant (Kw) of water at the fiven temperature
-    and 0.1 MPa pressure.
+    and 0.1 MPa pressure. If you pass a density, it will use this density
+    indead of the 0.1 MPa pressure.
 
     Data from:
         Bandura etal., J. Phys. Chem. Ref. Data, Vol. 35, No. 1, 2006
@@ -129,7 +130,10 @@ def ionization_constant_water(temperature=298.15):
     T = temperature
 
     # density
-    D = density_water(T)
+    if density:
+        D = density
+    else:
+        D = density_water(T)
 
     pKWG = 0.61415 \
             + 48251.33 / T \
