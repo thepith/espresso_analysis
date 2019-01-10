@@ -13,7 +13,6 @@ def c_SI_to_SIM(concentration_mol_L, sigma_in_meter, exponent=1.0):
     concentration_N_per_sigma = concentration_mol_L * conversion
     return concentration_N_per_sigma
 
-
 def c_SIM_to_SI(concentration_N_per_sigma_cubed,
                         sigma_in_meter,
                         exponent=1.0):
