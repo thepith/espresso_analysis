@@ -5,7 +5,8 @@ ELECTRON_CHARGE = 1.602176634 * np.power(10.0, -19.0) # C  # exact
 AVOGADRO_NUMBER = 6.02214076 * np.power(10.0, 23.0) # mol^{-1} # exact
 ELECTRIC_CONSTANT = 8.854187817 * np.power(10.0, -12.0) # F m^{-1}
 BOLTZMANN_CONSTANT = 1.380649 * np.power(10.0, -23.0) # J K^{-1} # exact
-GAS_CONSTANT = 8.3144598 # J mol{-1} K{-1}
+GAS_CONSTANT = AVOGADRO_NUMBER * BOLTZMANN_CONSTANT # J mol{-1} K{-1} exact
+FARADAY_CONSTANT = ELECTRON_CHARGE * AVOGADRO_NUMBER
 
 def dielectric_constant_water(temperature=298.15):
     """
