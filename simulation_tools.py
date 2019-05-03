@@ -75,10 +75,10 @@ class Transcript():
     """Transcript - direct print output to a file, in addition to terminal.
 
 Usage:
-    import transcript
-    transcript.start('logfile.log')
+    import Transcript
+    Transcript.start('logfile.log')
     print("inside file")
-    transcript.stop()
+    Transcript.stop()
     print("outside file")
 """
 
@@ -96,13 +96,12 @@ Usage:
         # this flush method is needed for python 3 compatibility.
         # this handles the flush command by doing nothing.
         # you might want to specify some extra behavior here.
-        pass
 
-    def start(filename):
+    def start(self, filename):
         """Start transcript, appending print output to given filename"""
         sys.stdout = Transcript(filename)
 
-    def stop():
+    def stop(self):
         """Stop transcript and return print functionality to normal"""
         sys.stdout.logfile.close()
         sys.stdout = sys.stdout.terminal
