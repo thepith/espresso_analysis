@@ -1,11 +1,12 @@
 """List of fundamental constants"""
 import numpy as np
+import scipy.constants as constants
 
-ELECTRON_CHARGE = 1.602176634 * np.power(10.0, -19.0) # C  # exact
-AVOGADRO_NUMBER = 6.02214076 * np.power(10.0, 23.0) # mol^{-1} # exact
-ELECTRIC_CONSTANT = 8.854187817 * np.power(10.0, -12.0) # F m^{-1}
-BOLTZMANN_CONSTANT = 1.380649 * np.power(10.0, -23.0) # J K^{-1} # exact
-GAS_CONSTANT = AVOGADRO_NUMBER * BOLTZMANN_CONSTANT # J mol{-1} K{-1} exact
+ELECTRON_CHARGE = constants.elementary_charge
+AVOGADRO_NUMBER = constants.Avogadro
+ELECTRIC_CONSTANT = constants.epsilon_0
+BOLTZMANN_CONSTANT = constants.Boltzmann
+GAS_CONSTANT = constants.gas_constant
 FARADAY_CONSTANT = ELECTRON_CHARGE * AVOGADRO_NUMBER
 
 def dielectric_constant_water(temperature=298.15):
@@ -54,10 +55,10 @@ def dielectric_constant_water(temperature=298.15):
     return fitfunction(temperature)
 
 def celsius_from_kelvin(temperature):
-    return temperature - 273.15
+    return constants.convert_temperature(temperature, "Kelvin", "Celsius")
 
 def kelvin_from_celsius(temperature):
-    return temperature + 273.15
+    return constants.convert_temperature(temperature, "Celsius", "Kelvin")
 
 def bjerrum_length_water(temperature=298.15):
     """
@@ -153,7 +154,3 @@ def ionization_constant_water(temperature=298.15, density=None):
     ) + pKWG + 2 * np.log10(Mw/1000.0)
 
     return np.power(10, -pKw)
-
-
-
-
